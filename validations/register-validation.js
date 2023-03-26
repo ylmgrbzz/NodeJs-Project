@@ -28,5 +28,20 @@ export const registerValidation = [
         }
         return true;
     }),
+    check('avatar')
+        .custom((value, { req }) => {
+            if (!req?.files?.avatar) {
+                throw new Error('Profil resmi yüklenmelidir.');
+            }
+            const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            const profileImage = req.files.avatar;
+            if (!allowedMimeTypes.includes(profileImage.mimetype)) {
+                throw new Error('Sadece .jpeg, .png ve .gif formatlarında dosya yükleyebilirsiniz.');
+            }
+            if (profileImage.size > 5 * 1024 * 1024) {
+                throw new Error('Dosya boyutu 5 MB\'ı geçemez.');
+            }
+            return true;
+        }),
 
 ]

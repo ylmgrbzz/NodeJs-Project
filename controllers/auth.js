@@ -1,4 +1,6 @@
 import { validationResult } from "express-validator";
+import User from "../models/user.js";
+import slugify from "slugify";
 
 
 export const getLoginController = (req, res) => {
@@ -28,12 +30,48 @@ export const postLoginController = (req, res) => {
 
 export const postRegisterController = (req, res) => {
     res.session.formData = req.body
-    res.render('auth/register', {
-        errors: errors.array()
+    const errors = validationResult(req)
+    // if (!errors.isEmpty()) {
+    // 	return res.status(400).json({
+    // 		errors: errors.array()
+    // 	});
+    // }
+    // hata yoksa
+    if (!errors.isEmpty()) {
+        let avatar = req.files.avatar
+        let file = avatar.name.split('.')
+        let fileExtension = file.pop()
+        let fileName = file.join('')
+        let path = 'upload/' + Date.now() + '-' + slugify(fileName, {
+            lower: true,
+            locale: 'tr',
+            strict: true
+        }) + '.' + fileExtension;
 
-    })
+        avatar.mv(path, async (error) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send(error)
+            }
+
+            const response = await User.create({
+                email: req.body.email,
+                password: req.body.password,
+                avatar: path,
+                username: req.body.username
+            })
+            const user = await User.findById(response.insertId)
+            req.session.username = user.username
+            req.session.user_id = user.id
+            res.redirect('/')
+        })
+    } else {
+        res.render('auth/register', {
+            errors: errors.array()
+        })
+    }
+
 }
-
 export const logoutController = (req, res) => {
     req.session.destroy()
     res.redirect('/')
