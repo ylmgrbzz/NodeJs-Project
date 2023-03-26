@@ -4,7 +4,23 @@ export const getLoginController = (req, res) => {
 export const postLoginController = (req, res) => {
     const { username, password } = req.body
     console.log(req.body);
+    res.locals.formData = req.body
+    let error
+    if (!username) {
+        error = 'Please fill in username fields'
+    }
+    else if (!password) {
+        error = 'Please fill in password fields'
+    } else if (username !== 'ylmgrbz' || password !== 'ylmgrbz') {
+        error = 'Username or password is incorrect'
+    } else {
 
+        req.session.username = username
+        res.redirect('/')
+    }
+    res.render('auth/login', {
+        error
+    })
 }
 
 
