@@ -1,3 +1,6 @@
+import { validationResult } from "express-validator";
+
+
 export const getLoginController = (req, res) => {
     res.render('auth/login')
 }
@@ -25,7 +28,10 @@ export const postLoginController = (req, res) => {
 
 export const postRegisterController = (req, res) => {
     res.session.formData = req.body
-    res.render('auth/register')
+    res.render('auth/register', {
+        errors: errors.array()
+
+    })
 }
 
 export const logoutController = (req, res) => {
