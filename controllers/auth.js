@@ -23,6 +23,11 @@ export const postLoginController = (req, res) => {
     })
 }
 
+export const postRegisterController = (req, res) => {
+    res.session.formData = req.body
+    res.render('auth/register')
+}
+
 export const logoutController = (req, res) => {
     req.session.destroy()
     res.redirect('/')
