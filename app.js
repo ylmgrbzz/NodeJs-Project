@@ -1,11 +1,13 @@
 import express from 'express';
-
+import users from './routes/users.js';
 const app = express();
 const port = 3000
 
 app.get('/', (req, res) => {
-    res.send('Helloo Worrldddd!');
+    res.send('Hello Worrldddd!');
 });
+
+app.use('/users', users);
 
 app.listen(port, () => {
     console.log(`Project app listening at http://localhost:${port}`)
