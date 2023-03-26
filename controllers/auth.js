@@ -28,4 +28,8 @@ export const logoutController = (req, res) => {
     res.redirect('/')
 }
 
+export const getRegisterController = (req, res) => {
+    res.render('auth/register')
+}
+
 
