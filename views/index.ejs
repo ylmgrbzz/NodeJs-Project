@@ -12,12 +12,5 @@
   </head>
   <body>
     <h3><%=greeting%></h3>
-
-    <% if (session.username) { %>
-    <a href="/auth/logout">Cikis yap</a>
-    <% } else { %>
-    <a href="/auth/login">Giris yap</a>
-    <a href="/auth/register">Kayit ol</a>
-    <% } %>
   </body>
 </html>
