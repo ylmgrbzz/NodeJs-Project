@@ -2,6 +2,7 @@ import express from "express";
 import auth from "./routes/auth.js";
 import dotenv from "dotenv";
 import session from "express-session";
+import fileUpload from "express-fileupload"
 
 dotenv.config();
 const app = express();
@@ -13,7 +14,13 @@ app.use(
         extended: true,
     })
 );
-
+app.use(
+    fileUpload({
+        // safeFileNames: true,
+        //preserveExtension: true,
+        useTempFiles: true
+    })
+)
 app.use((req, res, next) => {
     res.locals.session = req.session;
 });
