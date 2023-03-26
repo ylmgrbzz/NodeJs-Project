@@ -21,6 +21,8 @@ app.use(
         useTempFiles: true
     })
 )
+app.use('/assets', express.static('assets'))
+app.use('/upload', express.static('upload'))
 app.use((req, res, next) => {
     res.locals.session = req.session;
 });
