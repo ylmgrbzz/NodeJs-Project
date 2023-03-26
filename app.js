@@ -1,5 +1,6 @@
 import express from 'express';
 import users from './routes/users.js';
+// import auth from "./routes/auth.js";
 
 const app = express();
 const port = 3000
