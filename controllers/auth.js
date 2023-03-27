@@ -1,7 +1,7 @@
 import { validationResult } from "express-validator";
 // import User from "../models/user.js";
 import slugify from "slugify";
-import db from "../db.js";
+import pool from "../db.js";
 
 export const getLoginController = (req, res) => {
     res.render('auth/login')
@@ -37,6 +37,7 @@ export const postRegisterController = (req, res) => {
     // 	});
     // }
     // hata yoksa
+
     if (!errors.isEmpty()) {
         let avatar = req.files.avatar
         let file = avatar.name.split('.')
@@ -54,18 +55,24 @@ export const postRegisterController = (req, res) => {
                 return res.status(500).send(error)
             }
 
-            const data = {
-                email: req.body.email,
-                password: req.body.password,
-                username: req.body.username,
-                avatar: path
+            const db = await pool.getConnection()
+
+            try {
+                const data = {
+                    email: req.body.email,
+                    password: req.body.password,
+                    username: req.body.username,
+                    avatar: path
+                }
+
+                const [result] = await db.execute('INSERT INTO users SET email = : email, username = : username , password  = : password, avatar = : avatar', data, (error, result) => {
+                    if (error) throw error
+                    console.log("KAYIT TAMAMLANDI", result);
+                })
             }
-
-            db.execute('INSERT INTO users SET email = : email, username = : username , password  = : password, avatar = : avatar', data, (error, result) => {
-                if (error) throw error
-                console.log("KAYIT TAMAMLANDI", result);
-            })
-
+            catch (error) {
+                console.log(error);
+            }
 
             // const response = await User.create({
             //     email: req.body.email,
