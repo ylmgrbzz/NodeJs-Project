@@ -12,11 +12,10 @@ export const registerValidation = [
         .isEmail()
         .withMessage('Geçerli bir e-posta adresi girin.')
         .custom(async value => {
-            const user = await User.findByEmail(value).then(user => {
-                if (user) {
-                    return Promise.reject('E-posta zaten kullaniliyor!');
-                }
-            })
+            const user = await User.findByEmail(value);
+            if (user) {
+                return Promise.reject('E-posta zaten kullaniliyor!');
+            }
         }),
 
     body('password')
@@ -29,6 +28,7 @@ export const registerValidation = [
         }
         return true;
     }),
+
     check('avatar')
         .custom((value, { req }) => {
             if (!req?.files?.avatar) {
