@@ -1,7 +1,7 @@
 import { validationResult } from "express-validator";
 // import User from "../models/user.js";
 import slugify from "slugify";
-
+import db from "../db.js";
 
 export const getLoginController = (req, res) => {
     res.render('auth/login')
@@ -54,16 +54,29 @@ export const postRegisterController = (req, res) => {
                 return res.status(500).send(error)
             }
 
-            const response = await User.create({
+            const data = {
                 email: req.body.email,
                 password: req.body.password,
-                avatar: path,
-                username: req.body.username
+                username: req.body.username,
+                avatar: path
+            }
+
+            db.execute('INSERT INTO users SET email = : email, username = : username , password  = : password, avatar = : avatar', data, (error, result) => {
+                if (error) throw error
+                console.log("KAYIT TAMAMLANDI", result);
             })
-            const user = await User.findById(response.insertId)
-            req.session.username = user.username
-            req.session.user_id = user.id
-            res.redirect('/')
+
+
+            // const response = await User.create({
+            //     email: req.body.email,
+            //     password: req.body.password,
+            //     avatar: path,
+            //     username: req.body.username
+            // })
+            // const user = await User.findById(response.insertId)
+            // req.session.username = user.username
+            // req.session.user_id = user.id
+            // res.redirect('/')
         })
     } else {
         res.render('auth/register', {
