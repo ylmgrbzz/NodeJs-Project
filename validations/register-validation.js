@@ -1,4 +1,5 @@
 import { body, check } from "express-validator";
+import User from "../models/user.js";
 
 export const registerValidation = [
     body('username')
@@ -10,8 +11,8 @@ export const registerValidation = [
     body('email')
         .isEmail()
         .withMessage('Geçerli bir e-posta adresi girin.')
-        .custom(value => {
-            return User.findByEmail(value).then(user => {
+        .custom(async value => {
+            const user = await User.findByEmail(value).then(user => {
                 if (user) {
                     return Promise.reject('E-posta zaten kullaniliyor!');
                 }
