@@ -3,6 +3,7 @@ import auth from "./routes/auth.js";
 import dotenv from "dotenv";
 import session from "express-session";
 import fileUpload from "express-fileupload"
+import db from "./db.js";
 
 dotenv.config();
 const app = express();
