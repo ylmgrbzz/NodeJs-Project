@@ -5,6 +5,7 @@ import session from "express-session";
 import fileUpload from "express-fileupload"
 import db from "./db.js";
 import "./utils/env.js"
+import { decrypt } from "./utils/crypto.js";
 
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : ".env";
 dotenv.config({
@@ -30,9 +31,13 @@ app.use(
 )
 app.use('/assets', express.static('assets'))
 app.use('/upload', express.static('upload'))
+
 app.use((req, res, next) => {
-    res.locals.session = req.session;
-});
+    res.locals.session = req.session
+    res.locals.decrypt = decrypt
+    next()
+})
+
 app.get("/", (req, res) => {
     res.render("index", {
         title: "Yalım Gürbüz",

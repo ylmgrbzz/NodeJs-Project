@@ -10,7 +10,7 @@ function createKeyFromPassword(password, salt) {
     return crypto.pbkdf2Sync(password, salt, iterations, keyLength, 'sha512')
 }
 
-const key = createKeyFromPassword(password, salt)
+const key = createKeyFromPassword(String(password), String(salt))
 
 export function encrypt(plaintext) {
     const iv = crypto.randomBytes(16)

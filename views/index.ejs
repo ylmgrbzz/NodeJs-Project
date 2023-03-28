@@ -1,31 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport"
-    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>
-    <%=title%>
-  </title>
-</head>
-
-<body>
-  <h3>
-    <%=greeting%>
-  </h3>
-
-  <% if (session.username) { %>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/assets/css/style.css" />
+  </head>
+  <body>
+    <% if (session.username) { %>
+    <h3>Hosgeldin, <%= session.username %> (<%=decrypt(session.user_id)%>)</h3>
     <a href="/auth/logout">Cikis yap</a>
     <% } else { %>
-      <a href="/auth/login">Giris yap</a>
-      <a href="/auth/register">Kayit ol</a>
-      <% } %>
-
-</body>
-
-</html>
-</body>
-
+    <h3><%= greeting %></h3>
+    <a href="/auth/login">Giris yap</a>
+    <a href="/auth/register">Kayit ol</a>
+    <% } %>
+  </body>
 </html>

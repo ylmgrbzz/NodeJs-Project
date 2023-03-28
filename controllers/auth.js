@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
 import slugify from "slugify";
 import User from "../models/user.js";
+import { encrypt } from "../utils/crypto.js";
 
 export const getRegisterController = (req, res) => {
     res.render('auth/register')
@@ -23,7 +24,7 @@ export const postLoginController = async (req, res) => {
         const user = await User.login(username, password)
         if (user) {
             req.session.username = user.username
-            req.session.user_id = user.id
+            req.session.user_id = encrypt(String(user.id))
             res.redirect('/')
         } else {
             error = 'Bu bilgilere ait kullanici bulunamadi!'
