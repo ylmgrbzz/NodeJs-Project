@@ -7,6 +7,7 @@ import db from "./db.js";
 import "./utils/env.js"
 import { decrypt } from "./utils/crypto.js";
 import winston from "winston";
+import { logger } from "./utils/logger.js";
 
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : ".env";
 dotenv.config({
