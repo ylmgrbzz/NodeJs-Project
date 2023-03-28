@@ -6,6 +6,7 @@ import fileUpload from "express-fileupload"
 import db from "./db.js";
 import "./utils/env.js"
 import { decrypt } from "./utils/crypto.js";
+import winston from "winston";
 
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : ".env";
 dotenv.config({
@@ -52,6 +53,19 @@ app.use(
     })
 );
 app.use("/auth", auth);
+
+app.use((err, req, res, next) => {
+
+    logger.error(`${req.method} ${req.url} - ${err.message}`, {
+        timestamp: new Date(),
+        stack: err.stack,
+    });
+
+    res.status(500).send('Bir hata meydana geldi!')
+
+    //next()
+})
+
 
 app.listen(port, () => {
     console.log(`Project app listening at http://localhost:${port}`);
