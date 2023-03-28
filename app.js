@@ -5,7 +5,12 @@ import session from "express-session";
 import fileUpload from "express-fileupload"
 import db from "./db.js";
 
-dotenv.config();
+const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : ".env";
+dotenv.config({
+    path: envFile,
+});
+
+
 const app = express();
 const port = 3000;
 
