@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import session from "express-session";
 import fileUpload from "express-fileupload"
 import db from "./db.js";
+import "./utils/env.js"
 
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : ".env";
 dotenv.config({
